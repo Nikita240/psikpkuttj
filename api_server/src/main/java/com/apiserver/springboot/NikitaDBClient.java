@@ -46,4 +46,19 @@ public class NikitaDBClient {
 
     return blockingStub.newUser(user);
   }
+
+  /** Update an existing user. */
+  public User updateUser(Long id, Map<String, String> request) {
+
+    User user = User.newBuilder()
+                    .setId(id)
+                    .setFirstName(request.get("firstName"))
+                    .setLastName(request.get("lastName"))
+                    .setDateOfBirth(request.get("dateOfBirth"))
+                    .setEmail(request.get("email"))
+                    .setPhoneNumber(request.get("phoneNumber"))
+                    .build();
+
+    return blockingStub.updateUser(user);
+  }
 }

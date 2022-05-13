@@ -4,8 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
 
@@ -31,6 +33,12 @@ public class Application {
 	@PostMapping("/users")
 	public String newUser(@RequestBody Map<String, String> payload) throws InvalidProtocolBufferException {
 		User user = client.newUser(payload);
+		return JsonFormat.printer().print(user);
+	}
+
+	@PutMapping("/users/{id}")
+	public String updateUser(@RequestBody Map<String, String> payload, @PathVariable Long id) throws InvalidProtocolBufferException {
+		User user = client.updateUser(id, payload);
 		return JsonFormat.printer().print(user);
 	}
 

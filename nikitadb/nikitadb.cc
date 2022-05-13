@@ -71,9 +71,27 @@ class UserDBServiceImpl final : public user::UserDB::Service {
     }
 
     Status UpdateUser(ServerContext* context, const user::User* request,
-                     user::User* userMessage) override {
+                     user::User* response) override {
 
-        return Status::OK;
+        std::unordered_map<size_t, User>::iterator search = users.find(request->id());
+
+        if(search == users.end()) {
+            return Status::CANCELLED;
+        }
+        else {
+            User& user = search->second;
+
+            user.first_name = request->first_name();
+            user.last_name = request->last_name();
+            user.date_of_birth = request->date_of_birth();
+            user.email = request->email();
+            user.phone_number = request->phone_number();
+
+            *response = *request;
+            response->set_id(user.id);
+
+            return Status::OK;
+        }
     }
 };
 
