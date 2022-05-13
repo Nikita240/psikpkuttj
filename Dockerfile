@@ -75,7 +75,7 @@ RUN apt update && DEBIAN_FRONTEND="noninteractive" apt install --no-install-reco
 COPY --from=gprc_build /opt/grpc/install /usr/local
 
 COPY ./nikitadb ./
-COPY ./protos ../protos
+COPY ./api_server/src/main/proto ./protos
 
 RUN mkdir -p build \
     && cd build \
@@ -92,7 +92,7 @@ CMD "greeter_server"
 # ******************************************************************************
 
 # api server container
-FROM openjdk:18-jdk-alpine as api_server_build
+FROM openjdk:18 as api_server_build
 
 WORKDIR /opt/api_server
 
