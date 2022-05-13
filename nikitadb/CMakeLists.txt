@@ -5,14 +5,14 @@ project(nikitadb C CXX)
 include(common.cmake)
 
 # Proto file
-get_filename_component(hw_proto "protos/helloworld.proto" ABSOLUTE)
+get_filename_component(hw_proto "protos/user.proto" ABSOLUTE)
 get_filename_component(hw_proto_path "${hw_proto}" PATH)
 
 # Generated sources
-set(hw_proto_srcs "${CMAKE_CURRENT_BINARY_DIR}/helloworld.pb.cc")
-set(hw_proto_hdrs "${CMAKE_CURRENT_BINARY_DIR}/helloworld.pb.h")
-set(hw_grpc_srcs "${CMAKE_CURRENT_BINARY_DIR}/helloworld.grpc.pb.cc")
-set(hw_grpc_hdrs "${CMAKE_CURRENT_BINARY_DIR}/helloworld.grpc.pb.h")
+set(hw_proto_srcs "${CMAKE_CURRENT_BINARY_DIR}/user.pb.cc")
+set(hw_proto_hdrs "${CMAKE_CURRENT_BINARY_DIR}/user.pb.h")
+set(hw_grpc_srcs "${CMAKE_CURRENT_BINARY_DIR}/user.grpc.pb.cc")
+set(hw_grpc_hdrs "${CMAKE_CURRENT_BINARY_DIR}/user.grpc.pb.h")
 add_custom_command(
       OUTPUT "${hw_proto_srcs}" "${hw_proto_hdrs}" "${hw_grpc_srcs}" "${hw_grpc_hdrs}"
       COMMAND ${_PROTOBUF_PROTOC}
@@ -38,8 +38,8 @@ target_link_libraries(hw_grpc_proto
   ${_PROTOBUF_LIBPROTOBUF})
 
 find_package(gRPC CONFIG REQUIRED)
-add_executable(greeter_server greeter_server.cc)
-target_link_libraries(greeter_server
+add_executable(nikitadb nikitadb.cc)
+target_link_libraries(nikitadb
     hw_grpc_proto
     ${_REFLECTION}
     ${_GRPC_GRPCPP}

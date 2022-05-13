@@ -2,19 +2,33 @@ package com.apiserver.springboot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import com.google.protobuf.util.JsonFormat;
+
+import java.util.List;
 
 @SpringBootApplication
 @RestController
 public class Application {
 
-	@RequestMapping("/")
-	public String home() {
-		return "Hello World";
+	private static NikitaDBClient client;
+
+	@GetMapping("/users")
+	public String userIndex() {
+
+		try {
+			UserIndex users = client.listUsers();
+			return JsonFormat.printer().print(users);
+		}
+		catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.toString());
+		}
 	}
 
 	public static void main(String[] args) {
@@ -30,8 +44,7 @@ public class Application {
 			.usePlaintext()
 			.build();
 		try {
-			HelloWorldClient client = new HelloWorldClient(channel);
-			client.greet("nikita");
+			client = new NikitaDBClient(channel);
 		} finally {
 			// ManagedChannels use resources like threads and TCP connections. To prevent leaking these
 			// resources the channel should be shut down when it will no longer be used. If it may be used

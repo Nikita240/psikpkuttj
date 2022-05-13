@@ -87,7 +87,7 @@ ENV PATH="${PATH}:/opt/nikitadb/build"
 
 EXPOSE 50051
 
-CMD "greeter_server"
+CMD "nikitadb"
 
 # ******************************************************************************
 

@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.apiserver.springboot";
+option java_outer_classname = "UserProto";
+
+package user;
+
+service UserDB {
+    rpc ListUsers (UserIndexRequest) returns (UserIndex) {}
+    rpc NewUser (User) returns (User) {}
+    rpc UpdateUser (User) returns (User) {}
+}
+
+message UserIndexRequest {
+    uint32 page = 1;
+}
+
+message User {
+    optional uint64 id = 1;
+    optional string first_name = 2;
+    optional string last_name = 3;
+    optional string date_of_birth = 4;
+    optional string email = 5;
+    optional string phone_number = 6;
+}
+
+message UserIndex {
+    repeated User users = 1;
+}
