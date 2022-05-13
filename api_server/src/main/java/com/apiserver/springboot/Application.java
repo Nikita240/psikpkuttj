@@ -19,7 +19,7 @@ public class Application {
 
 	public static void main(String[] args) {
 		// Access a service running on the local machine on port 50051
-		String target = "localhost:50051";
+		String target = "nikitadb:50051";
 
 		// Create a communication channel to the server, known as a Channel. Channels are thread-safe
 		// and reusable. It is common to create channels at the beginning of your application and reuse
