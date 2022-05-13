@@ -55,6 +55,8 @@ ENV PATH="${PATH}:/opt/client/bin"
 COPY --from=gprc_build /opt/grpc/install /usr/local
 COPY --from=gprc_build /opt/grpc/examples/cpp/helloworld/cmake/build ./bin
 
+CMD "greeter_client"
+
 # ******************************************************************************
 
 # server build container
