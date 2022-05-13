@@ -10,12 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
-
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import com.google.protobuf.util.JsonFormat;
 import com.google.protobuf.InvalidProtocolBufferException;
-
 import java.util.Map;
 
 @SpringBootApplication
@@ -54,14 +52,8 @@ public class Application {
 			// needing certificates.
 			.usePlaintext()
 			.build();
-		try {
-			client = new NikitaDBClient(channel);
-		} finally {
-			// ManagedChannels use resources like threads and TCP connections. To prevent leaking these
-			// resources the channel should be shut down when it will no longer be used. If it may be used
-			// again leave it running.
-			// channel.shutdownNow().awaitTermination(5, TimeUnit.SECONDS);
-		}
+
+		client = new NikitaDBClient(channel);
 
 		SpringApplication.run(Application.class, args);
 	}

@@ -13,10 +13,6 @@ using grpc::Server;
 using grpc::ServerBuilder;
 using grpc::ServerContext;
 using grpc::Status;
-// using user::UserDB;
-// using user::UserIndexRequest;
-// using user::User;
-// using user::UserIndex;
 
 struct User {
     size_t id;
