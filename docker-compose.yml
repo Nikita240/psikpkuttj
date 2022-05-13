@@ -19,6 +19,26 @@ services:
     # Make tini be PID 1 to force Ctrl-C to kill underlying proccess.
     init: true
 
+  api-server:
+    image: api-server
+
+    build:
+      context: .
+      target: api_server_build
+
+    # depends_on:
+    #   - nikitadb
+
+    # Share ports with the host.
+    network_mode: "host"
+
+    # Pass stdin through to the executable.
+    stdin_open: true
+    tty: true
+
+    # Make tini be PID 1 to force Ctrl-C to kill underlying proccess.
+    init: true
+
   test-client:
     image: test-client
 

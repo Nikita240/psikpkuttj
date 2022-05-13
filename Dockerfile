@@ -88,3 +88,22 @@ ENV PATH="${PATH}:/opt/nikitadb/build"
 EXPOSE 50051
 
 CMD "greeter_server"
+
+# ******************************************************************************
+
+# api server container
+FROM openjdk:18-jdk-alpine as api_server_build
+
+WORKDIR /opt/api_server
+
+COPY api_server/mvnw .
+COPY api_server/.mvn .mvn
+COPY api_server/pom.xml .
+COPY api_server/src src
+
+RUN --mount=type=cache,target=/root/.m2 ./mvnw install -DskipTests
+RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
+
+EXPOSE 8080
+
+CMD ["java", "-jar", "target/api-server-0.0.1.jar"]
