@@ -7,8 +7,7 @@ import io.grpc.StatusRuntimeException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Client for NikitaDB database.
@@ -32,5 +31,19 @@ public class NikitaDBClient {
 
     UserIndexRequest request = UserIndexRequest.newBuilder().setPage(0).build();
     return blockingStub.listUsers(request);
+  }
+
+  /** Insert new user. */
+  public User newUser(Map<String, String> request) {
+
+    User user = User.newBuilder()
+                    .setFirstName(request.get("firstName"))
+                    .setLastName(request.get("lastName"))
+                    .setDateOfBirth(request.get("dateOfBirth"))
+                    .setEmail(request.get("email"))
+                    .setPhoneNumber(request.get("phoneNumber"))
+                    .build();
+
+    return blockingStub.newUser(user);
   }
 }

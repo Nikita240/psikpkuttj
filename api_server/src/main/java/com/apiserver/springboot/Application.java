@@ -3,6 +3,8 @@ package com.apiserver.springboot;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
@@ -10,8 +12,9 @@ import org.springframework.http.HttpStatus;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import com.google.protobuf.util.JsonFormat;
+import com.google.protobuf.InvalidProtocolBufferException;
 
-import java.util.List;
+import java.util.Map;
 
 @SpringBootApplication
 @RestController
@@ -20,15 +23,15 @@ public class Application {
 	private static NikitaDBClient client;
 
 	@GetMapping("/users")
-	public String userIndex() {
+	public String userIndex()  throws InvalidProtocolBufferException {
+		UserIndex users = client.listUsers();
+		return JsonFormat.printer().print(users);
+	}
 
-		try {
-			UserIndex users = client.listUsers();
-			return JsonFormat.printer().print(users);
-		}
-		catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.toString());
-		}
+	@PostMapping("/users")
+	public String newUser(@RequestBody Map<String, String> payload) throws InvalidProtocolBufferException {
+		User user = client.newUser(payload);
+		return JsonFormat.printer().print(user);
 	}
 
 	public static void main(String[] args) {

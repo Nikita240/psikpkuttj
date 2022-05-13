@@ -30,6 +30,7 @@ struct User {
 std::unordered_map<size_t, User> users = {
     {0, {0, "Nikita", "Rushmanov", "11/06/1994", "rush3nik@gmail.com", "3108497829"}}
 }; // PK
+size_t keyCounter = 1; // Keep track of largest key so that we know what to use when inserting.
 
 // Logic and data behind the server's behavior.
 class UserDBServiceImpl final : public user::UserDB::Service {
@@ -51,8 +52,21 @@ class UserDBServiceImpl final : public user::UserDB::Service {
     }
 
     Status NewUser(ServerContext* context, const user::User* request,
-                     user::User* userMessage) override {
+                     user::User* response) override {
 
+        users[keyCounter] = {
+            keyCounter,
+            request->first_name(),
+            request->last_name(),
+            request->date_of_birth(),
+            request->email(),
+            request->phone_number()
+        };
+
+        *response = *request;
+        response->set_id(keyCounter);
+
+        ++keyCounter;
         return Status::OK;
     }
 
